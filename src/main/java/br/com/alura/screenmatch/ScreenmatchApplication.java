@@ -1,6 +1,8 @@
 package br.com.alura.screenmatch;
 
+import br.com.alura.screenmatch.model.TvShowDTO;
 import br.com.alura.screenmatch.service.APIConsumption;
+import br.com.alura.screenmatch.service.DataConversion;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,7 +17,11 @@ public class ScreenmatchApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         var apiConsumption = new APIConsumption();
-        var json = apiConsumption.obtainData("");
+        var json = apiConsumption.obtainData("http://www.omdbapi.com/?t=");
         System.out.println(json);
+
+        DataConversion converter = new DataConversion();
+        TvShowDTO data = converter.obtainData(json, TvShowDTO.class);
+        System.out.println(data);
     }
 }
