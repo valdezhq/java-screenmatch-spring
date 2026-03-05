@@ -1,6 +1,6 @@
 package br.com.alura.screenmatch;
 
-import br.com.alura.screenmatch.model.TvShowDTO;
+import br.com.alura.screenmatch.model.TvShowData;
 import br.com.alura.screenmatch.service.APIConsumption;
 import br.com.alura.screenmatch.service.DataConversion;
 import org.springframework.boot.CommandLineRunner;
@@ -21,7 +21,7 @@ public class ScreenmatchApplication implements CommandLineRunner {
         System.out.println(json);
 
         DataConversion converter = new DataConversion();
-        TvShowDTO data = converter.obtainData(json, TvShowDTO.class);
+        TvShowData data = converter.obtainData(json, TvShowData.class);
         System.out.println(data);
     }
 }
