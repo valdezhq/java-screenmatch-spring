@@ -3,6 +3,7 @@ package br.com.alura.screenmatch.main;
 import br.com.alura.screenmatch.model.Show;
 import br.com.alura.screenmatch.model.ShowData;
 import br.com.alura.screenmatch.model.SeasonData;
+import br.com.alura.screenmatch.repository.ShowRepository;
 import br.com.alura.screenmatch.service.APIConsumption;
 import br.com.alura.screenmatch.service.DataConverter;
 
@@ -19,6 +20,12 @@ public class Main {
     private final String URL = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=e2f5558";
     private List<ShowData> showData = new ArrayList<>();
+
+    private ShowRepository repository;
+
+    public Main(ShowRepository repository) {
+        this.repository = repository;
+    }
 
     public void displayMenu() {
         var option = -1;
