@@ -62,7 +62,8 @@ public class Main {
 
     private void searchShowWeb() {
         ShowData data = getShowData();
-        showData.add(data);
+        Show show = new Show(data);
+        repository.save(show);
         System.out.println(data);
     }
 
@@ -88,9 +89,6 @@ public class Main {
 
     private void listSearchedShows(){
         List<Show> shows = new ArrayList<>();
-        shows = showData.stream()
-                .map(d -> new Show(d))
-                .collect(Collectors.toList());
         shows.stream()
                 .sorted(Comparator.comparing(Show::getGenre))
                 .forEach(System.out::println);
