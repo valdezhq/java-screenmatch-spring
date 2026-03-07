@@ -1,8 +1,7 @@
 package br.com.alura.screenmatch.main;
 
-import br.com.alura.screenmatch.model.EpisodeData;
-import br.com.alura.screenmatch.model.Series;
-import br.com.alura.screenmatch.model.SeriesData;
+import br.com.alura.screenmatch.model.Show;
+import br.com.alura.screenmatch.model.ShowData;
 import br.com.alura.screenmatch.model.SeasonData;
 import br.com.alura.screenmatch.service.APIConsumption;
 import br.com.alura.screenmatch.service.DataConverter;
@@ -19,7 +18,7 @@ public class Main {
     private DataConverter converter = new DataConverter();
     private final String URL = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=e2f5558";
-    private List<SeriesData> seriesData = new ArrayList<>();
+    private List<ShowData> showData = new ArrayList<>();
 
     public void displayMenu() {
         var option = -1;
@@ -37,13 +36,13 @@ public class Main {
 
             switch (option) {
                 case 1:
-                    searchSeriesWeb();
+                    searchShowWeb();
                     break;
                 case 2:
-                    searchEpisodePerSeries();
+                    searchEpisodePerShow();
                     break;
                 case 3:
-                    listSearchedSeries();
+                    listSearchedShows();
                     break;
                 case 0:
                     System.out.println("Leaving...");
@@ -54,39 +53,39 @@ public class Main {
         }
     }
 
-    private void searchSeriesWeb() {
-        SeriesData data = getSeriesData();
-        seriesData.add(data);
+    private void searchShowWeb() {
+        ShowData data = getShowData();
+        showData.add(data);
         System.out.println(data);
     }
 
-    private SeriesData getSeriesData() {
+    private ShowData getShowData() {
         System.out.println("Search any show: ");
-        var seriesName = scanner.nextLine();
-        var json = consumption.obtainData(URL + seriesName.replace(" ", "+") + API_KEY);
-        SeriesData data = converter.obtainData(json, SeriesData.class);
+        var showName = scanner.nextLine();
+        var json = consumption.obtainData(URL + showName.replace(" ", "+") + API_KEY);
+        ShowData data = converter.obtainData(json, ShowData.class);
         return data;
     }
 
-    private void searchEpisodePerSeries(){
-        SeriesData seriesData = getSeriesData();
+    private void searchEpisodePerShow(){
+        ShowData showData = getShowData();
         List<SeasonData> seasons = new ArrayList<>();
 
-        for (int i = 1; i <= seriesData.totalSeasons(); i++) {
-            var json = consumption.obtainData(URL + seriesData.title().replace(" ", "+") + "&season=" + i + API_KEY);
+        for (int i = 1; i <= showData.totalSeasons(); i++) {
+            var json = consumption.obtainData(URL + showData.title().replace(" ", "+") + "&season=" + i + API_KEY);
             SeasonData seasonData = converter.obtainData(json, SeasonData.class);
             seasons.add(seasonData);
         }
         seasons.forEach(System.out::println);
     }
 
-    private void listSearchedSeries(){
-        List<Series> series = new ArrayList<>();
-        series = seriesData.stream()
-                .map(d -> new Series(d))
+    private void listSearchedShows(){
+        List<Show> shows = new ArrayList<>();
+        shows = showData.stream()
+                .map(d -> new Show(d))
                 .collect(Collectors.toList());
-        series.stream()
-                .sorted(Comparator.comparing(Series::getGenre))
+        shows.stream()
+                .sorted(Comparator.comparing(Show::getGenre))
                 .forEach(System.out::println);
     }
 }

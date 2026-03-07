@@ -1,9 +1,10 @@
 package br.com.alura.screenmatch.model;
 
+import jakarta.persistence.*;
 import java.util.OptionalDouble;
 
 @Entity
-public class Series {
+public class Show {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,14 +18,16 @@ public class Series {
     private String poster;
     private String synopsis;
 
-    public Series(SeriesData seriesData) {
-        this.title = seriesData.title();
-        this.totalSeasons = seriesData.totalSeasons();
-        this.rating = OptionalDouble.of(Double.valueOf(seriesData.rating())).orElse(0);
-        this.genre = Genre.fromString(seriesData.genre().split(",")[0].trim());
-        this.actors = seriesData.actors();
-        this.poster = seriesData.poster();
-        this.synopsis = seriesData.synopsis();
+    public Show() {}
+
+    public Show(ShowData showData) {
+        this.title = showData.title();
+        this.totalSeasons = showData.totalSeasons();
+        this.rating = OptionalDouble.of(Double.valueOf(showData.rating())).orElse(0);
+        this.genre = Genre.fromString(showData.genre().split(",")[0].trim());
+        this.actors = showData.actors();
+        this.poster = showData.poster();
+        this.synopsis = showData.synopsis();
     }
 
     public Long getId() {
